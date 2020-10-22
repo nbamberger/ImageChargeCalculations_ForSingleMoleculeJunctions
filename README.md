@@ -12,4 +12,4 @@ To report a problem or ask for help, please contact monti@email.arizona.edu.
 
 Code and documentation written by Nathan Bamberger.
 
-Make sure to also check out our sister repository, the SMAUG-Toolbox at github.com/LabMonti/SMAUG-Toolbox!  SMAUG contains numerous graphical analysis tools for investigating breaking trace data from single-molecule conductance experiments, including a novel segmentation-based clustering algorithm. 
+Make sure to also check out our sister repository, the SMAUG-Toolbox at github.com/LabMonti/SMAUG-Toolbox!  SMAUG contains numerous graphical analysis tools for investigating breaking trace data from single-molecule conductance experiments, including a novel segmentation-based clustering algorithm described in Bamberger et al. 2020 (doi.org/10.1021/acs.jpcc.0c03612). 
