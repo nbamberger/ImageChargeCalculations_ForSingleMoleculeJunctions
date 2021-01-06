@@ -1,7 +1,7 @@
 function [E1,E2,Ediff] = ...
     CompareDetailed_TwoElectrode_Renormalization_2D(charges1, charges2, ...
     coords1, coords2, atomic_nums1, atomic_nums2,gap_size, minEnChange,...
-    CombinedSwitch, ConservedBuckets, CombineAcrossDiag)
+    CombinedSwitch, ConservedBuckets, CombineAcrossDiag, DoNotMatch_IDList)
     %Copyright 2020 LabMonti.  Written by Nathan Bamberger.  This work is 
     %licensed under the Creative Commons Attribution-NonCommercial 4.0 
     %International License. To view a copy of this license, visit 
@@ -59,6 +59,10 @@ function [E1,E2,Ediff] = ...
     %   ALWAYS be symmetric across the diagonal, and so this combination
     %   does not lose any information.
     %
+    %DoNotMatch_IDList: an optional vector containing the ID #s of atoms
+    %   (from the smaller coordinate set) that should NOT be matched with
+    %   the larger molecule, no matter if they are close enough or not
+    %
     %######################################################################
     %
     %~~~OUTPUTS~~~:
@@ -71,6 +75,9 @@ function [E1,E2,Ediff] = ...
     
     
     %Default inputs
+    if nargin < 12
+        DoNotMatch_IDList = [];
+    end
     if nargin < 11
         CombineAcrossDiag = true;
     end
@@ -91,7 +98,8 @@ function [E1,E2,Ediff] = ...
     %them to put all conserved atoms first
     [nConserved, Emat1, Emat2, ~, ~, ~, ~, an1, an2] = ...
         prepare_2mol_imagecharge_comparison(charges1, charges2, coords1, ...
-        coords2, atomic_nums1, atomic_nums2, gap_size, minEnChange);
+        coords2, atomic_nums1, atomic_nums2, gap_size, minEnChange,...
+        DoNotMatch_IDList);
     n1 = length(an1);
     n2 = length(an2);
     

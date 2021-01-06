@@ -1,7 +1,7 @@
 function [smaller_HasMatch, larger_MatchID, reOrderSmaller, ...
     reOrderLarger, coords_SmallerSet] = match_up_atoms(...
     coords_SmallerSet, atomic_nums_SmallerSet, coords_LargerSet, ...
-    atomic_nums_LargerSet,ToPlot)
+    atomic_nums_LargerSet,ToPlot,DoNotMatch_IDList)
     %Copyright 2020 LabMonti.  Written by Nathan Bamberger.  This work is 
     %licensed under the Creative Commons Attribution-NonCommercial 4.0 
     %International License. To view a copy of this license, visit 
@@ -33,6 +33,10 @@ function [smaller_HasMatch, larger_MatchID, reOrderSmaller, ...
     %   atoms were paired up with each other and which were determined to
     %   be "unique"
     %
+    %DoNotMatch_IDList: an optional vector containing the ID #s of atoms
+    %   (from the smaller coordinate set) that should NOT be matched with
+    %   the larger molecule, no matter if they are close enough or not
+    %
     %######################################################################
     %
     %~~~OUTPUTS~~~:
@@ -60,6 +64,9 @@ function [smaller_HasMatch, larger_MatchID, reOrderSmaller, ...
     
     if nargin < 5
         ToPlot = false;
+    end
+    if nargin < 6
+        DoNotMatch_IDList = [];
     end
 
     %First, figure out which way to orient the two molecules so that they
@@ -113,12 +120,12 @@ function [smaller_HasMatch, larger_MatchID, reOrderSmaller, ...
     
     %Set threshhold to two times the median of the smallest distance
     %for each atom fromt the smaller set to the other molecule
-    threshhold = 4*median(min(dists,[],2));
+    threshhold = 16*median(min(dists,[],2));
     
     while minDist < Inf
         
         if atomic_nums_SmallerSet(minRow) == atomic_nums_LargerSet(minCol) && ...
-            minDist < threshhold
+            minDist < threshhold && ~any(minRow == DoNotMatch_IDList)
             smaller_HasMatch(minRow) = true;
             larger_MatchID(minCol) = minRow;
             dists(minRow,:) = Inf;

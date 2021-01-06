@@ -1,5 +1,5 @@
 function DifferenceInPartialCharge_PerAtom(charges1, charges2, ...
-    coords1, coords2, atomic_nums1,atomic_nums2)
+    coords1, coords2, atomic_nums1,atomic_nums2,DoNotMatch_IDList)
     %Copyright 2020 LabMonti.  Written by Nathan Bamberger.  This work is 
     %licensed under the Creative Commons Attribution-NonCommercial 4.0 
     %International License. To view a copy of this license, visit 
@@ -27,12 +27,20 @@ function DifferenceInPartialCharge_PerAtom(charges1, charges2, ...
     %atomic_nums1/atomic_nums2: a vector listing the atomic number of each
     %   atom in molecule 1/2. This information is needed to propertly match
     %   up which atoms are "equivalent" or not between the two molecules
+    %
+    %DoNotMatch_IDList: an optional vector containing the ID #s of atoms
+    %   (from the smaller coordinate set) that should NOT be matched with
+    %   the larger molecule, no matter if they are close enough or not
     
+    
+    if nargin < 7
+        DoNotMatch_IDList = [];
+    end
     
     %Match up atoms in order to put conserved atoms first
     [nConserved, ~, ~, ch1, ch2, pos1, pos2, ~, ~] = ...
         prepare_2mol_imagecharge_comparison(charges1, charges2, coords1, ...
-        coords2, atomic_nums1, atomic_nums2, 10, 100);
+        coords2, atomic_nums1, atomic_nums2, 10, 100,DoNotMatch_IDList);
     n2 = length(ch2);
     n1 = length(ch1);
 

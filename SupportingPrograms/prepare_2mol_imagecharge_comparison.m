@@ -1,6 +1,7 @@
 function [nConserved, Emat1, Emat2, ch1, ch2, pos1, pos2, an1, an2] = ...
     prepare_2mol_imagecharge_comparison(charges1, charges2, positions1, ...
-    positions2, atomic_nums1, atomic_nums2, gap_size, minEnChange)
+    positions2, atomic_nums1, atomic_nums2, gap_size, minEnChange,...
+    DoNotMatch_IDList)
     %Copyright 2020 LabMonti.  Written by Nathan Bamberger.  This work is 
     %licensed under the Creative Commons Attribution-NonCommercial 4.0 
     %International License. To view a copy of this license, visit 
@@ -52,8 +53,15 @@ function [nConserved, Emat1, Emat2, ch1, ch2, pos1, pos2, an1, an2] = ...
     %
     %an1/an2: same as atomic number inputs but re-ordered to put conserved
     %   atoms first
+    %
+    %DoNotMatch_IDList: an optional vector containing the ID #s of atoms
+    %   (from the smaller coordinate set) that should NOT be matched with
+    %   the larger molecule, no matter if they are close enough or not
     
     
+    if nargin < 9
+        DoNotMatch_IDList = [];
+    end
     if nargin < 8
         minEnChange = 0.002;
     end
@@ -71,7 +79,8 @@ function [nConserved, Emat1, Emat2, ch1, ch2, pos1, pos2, an1, an2] = ...
     %Match up atoms that are "the same" between the two molecules and
     %re-order the atoms so that the conserved atoms all come first
     [pos1,pos2,an1,an2,ch1,ch2,r1,r2,nConserved] = matchUp_and_reAlign_molecules(...
-        positions1,positions2,atomic_nums1,atomic_nums2,charges1,charges2);
+        positions1,positions2,atomic_nums1,atomic_nums2,charges1,charges2,...
+        false,DoNotMatch_IDList);
         
     %Re-order matrices to put conserved coordinates first
     Emat1 = Emat1(r1,:);

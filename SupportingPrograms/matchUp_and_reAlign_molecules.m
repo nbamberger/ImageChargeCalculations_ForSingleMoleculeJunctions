@@ -1,6 +1,6 @@
 function [coords1, coords2, an1, an2, ch1, ch2, r1, r2, nConserved] = ...
     matchUp_and_reAlign_molecules(coords1, coords2, an1, an2, ch1, ch2, ...
-    ToPlot)
+    ToPlot,DoNotMatch_IDList)
     %Copyright 2020 LabMonti.  Written by Nathan Bamberger.  This work is 
     %licensed under the Creative Commons Attribution-NonCommercial 4.0 
     %International License. To view a copy of this license, visit 
@@ -29,6 +29,10 @@ function [coords1, coords2, an1, an2, ch1, ch2, r1, r2, nConserved] = ...
     %   atoms were paired up with each other and which were determined to
     %   be "unique"
     %
+    %DoNotMatch_IDList: an optional vector containing the ID #s of atoms
+    %   (from the smaller coordinate set) that should NOT be matched with
+    %   the larger molecule, no matter if they are close enough or not
+    %
     %######################################################################
     %
     %~~~OUTPUTS~~~:
@@ -55,14 +59,19 @@ function [coords1, coords2, an1, an2, ch1, ch2, r1, r2, nConserved] = ...
     if nargin < 7
         ToPlot = false;
     end
+    if nargin < 8
+        DoNotMatch_IDList = [];
+    end
 
     %Run match-up atoms, with the order of inputs depending on which list
     %of atoms is smaller.  For the smaller set, replace the coordinates
     %with the output fro match-up atoms so that any flips are accounted for
     if length(ch1) > length(ch2)
-        [conserved,~,r2,r1,coords2] = match_up_atoms(coords2,an2,coords1,an1,ToPlot);
+        [conserved,~,r2,r1,coords2] = match_up_atoms(coords2,an2,coords1,...
+            an1,ToPlot,DoNotMatch_IDList);
     else
-        [conserved,~,r1,r2,coords1] = match_up_atoms(coords1,an1,coords2,an2,ToPlot);
+        [conserved,~,r1,r2,coords1] = match_up_atoms(coords1,an1,coords2,...
+            an2,ToPlot,DoNotMatch_IDList);
     end
     
     %Re-order all inputs to get final outputs:
