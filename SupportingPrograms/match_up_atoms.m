@@ -111,14 +111,14 @@ function [smaller_HasMatch, larger_MatchID, reOrderSmaller, ...
     [minDist,minCol] = min(minDist);
     minRow = minRow(minCol);
     
-    %Set threshhold to two times the median of the smallest distance
+    %Set threshhold to four times the median of the smallest distance
     %for each atom fromt the smaller set to the other molecule
     threshhold = 4*median(min(dists,[],2));
     
     while minDist < Inf
         
         if atomic_nums_SmallerSet(minRow) == atomic_nums_LargerSet(minCol) && ...
-            minDist < threshhold
+            minDist <= threshhold
             smaller_HasMatch(minRow) = true;
             larger_MatchID(minCol) = minRow;
             dists(minRow,:) = Inf;
