@@ -1,6 +1,6 @@
 # ImageChargeCalculations_ForSingleMoleculeJunctions
 
-This software package implements a simple image charge model with numerous visualization tools for investigating transport level renormalization in single molecule junctions. This package was used to perform all of the image charge analysis described in Ivie. et al. 2020 (https://arxiv.org/abs/2010.08662). 
+This software package implements a simple image charge model with numerous visualization tools for investigating transport level renormalization in single molecule junctions. This package was used to perform all of the image charge analysis described in Ivie and Bamberger et al. 2020 (https://doi.org/10.1021/acsami.0c19404). 
 
 This package was tested using MATLAB release 2020b, but it should be backwards and forwards compatible (if you run into issues please let us know!). In addition to the main MATLAB download, the Statistics and Machine Learning Toolbox is needed. 
 
